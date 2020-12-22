@@ -55,7 +55,7 @@ h2 {
   font-size: 20px;
   height: 10%;
   border-top: 2px solid #0000001a;
-  background: radial-gradient(#ff9ac9, #000) 0 0/200% 200%;
+  background: radial-gradient(#f9e428, #000) 0 0/200% 200%;
   animation: anim-back-loading ease-in-out 3s infinite alternate;
 }
 .power div {

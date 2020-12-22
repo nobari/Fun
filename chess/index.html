@@ -24,8 +24,9 @@
 
 #myBoard {
     width: 100%;
-    max-width: 100vw;
+    max-width: calc(100vh - 120px);
     height: auto;
+    max-height: 50%;
     overflow: visible;
 }
 
@@ -99,12 +100,22 @@ var themes=[];
 {
     themes.push($(this).val());
 });
+            $("#myBoard").click(e=>{
+                console.log("board clicked:",e)
+                $("#myBoard")[0].scrollIntoView({
+  behavior: "smooth",
+  block: "center",
+  inline: "center" 
+});
+            })
             $("#themeBtn").click(e=>{
+                e.preventDefault();
                 themeName=themes[Math.trunc(Math.random()*themes.length)];
                 $("#themeSelect").val(themeName)
                 modifyBoard()
             });
             $("#themeSelect").change(e=>{
+                e.preventDefault();
                 const newTheme=e.target.value;
                 console.log("theme:",newTheme);
                 themeName=newTheme;
