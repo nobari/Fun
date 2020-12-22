@@ -69,10 +69,23 @@
         <script onload="modifyBoard()" defer src="https://cdn.jsdelivr.net/gh/zeyu2001/chess-ai/js/main.min.js"></script>
         <script defer>
             var original=true;
+var themeName="3d_staunton";
+var themes=[];
+            function pieceTheme (piece) {
+  // wikipedia theme for white pieces
+//   if (piece.search(/w/) !== -1) {
+//     return 'img/chesspieces/wikipedia/' + piece + '.png'
+//   }
+
+  // alpha theme for black pieces
+  return `https://images.chesscomfiles.com/chess-themes/pieces/${themeName}/150/${piece.toLowerCase()}.png`;
+}
             function modifyBoard(){
                 console.log("board set")
                 if(typeof config=== "undefined")return;
-                 config.pieceTheme=original?'https://cdn.jsdelivr.net/gh/zeyu2001/chess-ai/img/chesspieces/wikipedia/{piece}.png':'https://chessboardjs.com/img/chesspieces/alpha/{piece}.png';
+
+                
+                 config.pieceTheme=pieceTheme;//original?'https://cdn.jsdelivr.net/gh/zeyu2001/chess-ai/img/chesspieces/wikipedia/{piece}.png':'https://chessboardjs.com/img/chesspieces/alpha/{piece}.png';
                  original=!original;
                  const curFen=game.fen();
                  console.log("fen:",curFen)
@@ -82,7 +95,21 @@
             }
             window.addEventListener("resize",e=>{board.resize()})
             window.addEventListener("load",e=>{
-            $("#themeBtn").click(modifyBoard)
+                             $("#themeSelect option").each(function()
+{
+    themes.push($(this).val());
+});
+            $("#themeBtn").click(e=>{
+                themeName=themes[Math.trunc(Math.random()*themes.length)];
+                $("#themeSelect").val(themeName)
+                modifyBoard()
+            });
+            $("#themeSelect").change(e=>{
+                const newTheme=e.target.value;
+                console.log("theme:",newTheme);
+                themeName=newTheme;
+                modifyBoard()
+            })
 
             })
         </script>
@@ -175,7 +202,77 @@
                         <div id="myBoard"></div>
                          <div class="row text-align-center">
                             <div class="col my-2">
-                        <button class="btn btn-primary" id="themeBtn">Theme</button>
+                        <button class="btn btn-primary" id="themeBtn">Toggle Theme</button>
+                                <select id="themeSelect">
+     <option value="8_bit">
+      8-Bit
+    </option><option value="alpha">
+      Alpha
+    </option><option value="bases">
+      Bases
+    </option><option value="book">
+      Book
+    </option><option value="bubblegum">
+      Bubblegum
+    </option><option value="cases">
+      Cases
+    </option><option value="classic">
+      Classic
+    </option><option value="club">
+      Club
+    </option><option value="condal">
+      Condal
+    </option><option value="dash">
+      Dash
+    </option><option value="game_room">
+      Game Room
+    </option><option value="glass">
+      Glass
+    </option><option value="gothic">
+      Gothic
+    </option><option value="graffiti">
+      Graffiti
+    </option><option value="icy_sea">
+      Icy Sea
+    </option><option value="light">
+      Light
+    </option><option value="lolz">
+      Lolz
+    </option><option value="marble">
+      Marble
+    </option><option value="maya">
+      Maya
+    </option><option value="metal">
+      Metal
+    </option><option value="nature">
+      Nature
+    </option><option value="neon">
+      Neon
+    </option><option value="neo">
+      Neo
+    </option><option value="neo_wood">
+      Neo-Wood
+    </option><option value="newspaper">
+      Newspaper
+    </option><option value="ocean">
+      Ocean
+    </option><option value="sky">
+      Sky
+    </option><option value="space">
+      Space
+    </option><option value="tigers">
+      Tigers
+    </option><option value="tournament">
+      Tournament
+    </option><option value="vintage">
+      Vintage
+    </option><option value="wood">
+      Wood
+    </option><option value="3dwood">
+      3D - Wood
+    </option><option value="3d_staunton" selected>
+      3D - Staunton
+    </option></select>
                             </div>
                             <div class="col my-2">
                                 <button class="btn btn-success" id="compVsCompBtn">Start</button>
