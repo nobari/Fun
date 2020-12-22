@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="fa">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+     <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+    <title>رزرواسیون</title>
+    <link rel="stylesheet" href="/styleMin.css" />
+
+    <meta name="description" content="سامانه رزرواسیون رقابتی" />
+    <meta name="keywords" content="سامانه,رزرواسیون,shuffle,date,sort,list,order,draw,winner" />
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://easyparvaz.ir/reserve/" />
+    <meta property="og:title" content="رزرواسیون" />
+    <meta property="og:description" content="سامانه رزرواسیون رقابتی" />
+    <meta property="og:image" content="https://unpkg.com/nobari@1.2.0/statics/imgs/sevenapp/logo.png" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://easyparvaz.ir/" />
+    <meta property="twitter:title" content="رزرواسیون" />
+    <meta property="twitter:description" content="سامانه رزرواسیون رقابتی" />
+    <meta property="twitter:image" content="https://unpkg.com/nobari@1.2.0/statics/imgs/sevenapp/logo.png" />
+
+    <meta name="description" content="مرتب سازی با تاریخ" />
+    <meta name="keywords" content="مرتب سازی,تاریخ,shuffle,date,sort,list,order,draw,winner" />
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://easyparvaz.ir/reserve/" />
+    <meta property="og:title" content="مرتب سازی" />
+    <meta property="og:description" content="مرتب سازی با تاریخ" />
+    <meta property="og:image" content="https://unpkg.com/nobari@1.2.0/statics/imgs/sevenapp/logo.png" />
+
+    <!-- add to homescreen for ios -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Reservation" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="viewport" content="width=device-width,height=device-height,user-scalable=no,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0" />
+    <style>
+      #live {
+        width: 10px;
+        height: 10px;
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 9;
+        background-color: #34d85b;
+        border-radius: 50%;
+      }
+      #dead {
+        position: fixed;
+        right: 20px;
+        top: 35px;
+        z-index: 9;
+        border: 2px dashed;
+        transform: rotate(-45deg);
+        width: 90px;
+        font-size: 20px;
+        text-align: center;
+        font-family: 'ISWA';
+        color: red;
+      }
+      #inputForm {
+        position: sticky;
+        top: 0;
+        background: white;
+        text-align: center;
+      }
+      #inputForm input {
+        font-size: 24px;
+        text-align: center;
+        font-family: 'ISWV';
+      }
+      #dateDelim {
+        width: 30px;
+        text-align: center;
+      }
+      .reserve-list {
+        margin: 10px 4px;
+        text-align: center;
+        display: table;
+      }
+      .reserve-list .btn {
+        display: inline-table;
+        width: 80px;
+        height: 80px;
+        margin: 10px;
+        border-radius: 50%;
+        border: 4px solid black;
+        font-size: 75px;
+        padding: 0px;
+        font-family: 'ISWA';
+        line-height: 0;
+      }
+      .btn[data-reserved] {
+        border: 0;
+        color: black;
+        background: transparent;
+      }
+      .footer {
+        text-align: center;
+      }
+      .footer img {
+        max-width: 400px;
+        width: 80%;
+        cursor: pointer;
+      }
+      .danger {
+        border: 2px solid red;
+      }
+      .modal-body .container a {
+        float: left;
+        direction: ltr;
+        text-align: left;
+      }
+    </style>
+  </head>
+  <body lang="fa">
+    <div id="preloader">
+      <div class="not-loaded" id="loader">
+        <p>در حال بارگذاری ...</p>
+        <img src="https://unpkg.com/nobari@1.2.0/statics/imgs/sevenapp/loading.gif" />
+      </div>
+    </div>
+    <div class="container rtl">
+      <div class="header wow fadeInDown" data-wow-delay="0.3s">
+        <h1>رزرواسیون</h1>
+      </div>
+      <div class="row wow bounceIn" data-wow-delay="0.3s">
+        <div class="col wow bounceIn" data-wow-delay="0.3s">
+          <form id="inputForm">
+            <h2>username</h2>
+            <div class="form-group">
+              <input class="form-control" id="username" />
+            </div>
+            <h2>password</h2>
+            <div class="form-group">
+              <input class="form-control" id="password" type="password" />
+            </div>
+            <h2>عنوان</h2>
+            <div class="form-group">
+              <input class="form-control" id="inputTitle" placeholder="برای فلانی" />
+            </div>
+            <h2>تعداد ساعت فعالیت (0 برای بدون ساعت)</h2>
+            <div class="form-group">
+              <input class="form-control" type="number" id="inputExpireh" placeholder="0" />
+            </div>
+            <h2>حداکثر تعداد دوره‌ها (0 برای بدون حداکثر)</h2>
+            <div class="form-group">
+              <input class="form-control" type="number" id="inputMax" placeholder="0" />
+            </div>
+            <button type="submit" class="btn btn-dark btn-lg btn-block">Register</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-html5sortable@1.0.0/jquery.sortable.min.js"></script>
+    <script src="https://unpkg.com/nobari@1.2.9/js/basics.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css/animate.compat.css" />
+    <script src="https://cdn.jsdelivr.net/npm/wowjs/dist/wow.min.js"></script>
+    <script src="/tools.js"></script>
+    <script>
+      addScript(captchaURL);
+      const production = !document.location.origin.includes('localhost') && !document.location.origin.includes('0.0.0');
+      const url = `https://${production ? 'api.boomiapp.ir' : 'localhost:777'}/reserve/new/`;
+      $(window).on('load', function () {
+        $('#preloader').fadeOut();
+      });
+      const fetchRid = async (body, method = 'POST') => {
+        console.log('fetch:', url, body, method);
+        $('#preloader').fadeIn();
+        return $.ajax({
+          method,
+          crossDomain: true,
+          url,
+          data: JSON.stringify({ ...body, ctoken: await getCaptcha() }),
+          contentType: 'application/json; charset=utf-8',
+        })
+          .done(function (res) {
+            console.log('fetch result:', res);
+            $('#preloader').fadeOut();
+            if (res.done) {
+              $('#modalTitle').html(' ✅ ایجاد شد');
+              const link = document.location.origin + '/reserve';
+              $('#outputModal .modal-body .container').html(`<a href="${link}" target="_blank">${link}</a>`);
+              $('#outputModal').modal();
+            } else {
+              showNotification('خطا رخ داد مجددا تلاش کنید.', 'danger', undefined, undefined, 4000);
+            }
+          })
+          .fail(function (msg) {
+            console.log('fetch error:', msg);
+            showNotification(msg.responseText ?? 'خطا رخ داد مجددا تلاش کنید.', 'danger', undefined, undefined, 4000);
+            $('#preloader').fadeOut();
+          });
+      };
+      $('#inputForm').submit((e) => {
+        e.preventDefault();
+        const title = $('#inputTitle').val(),
+          expireh = $('#inputExpireh').val(),
+          max = $('#inputMax').val(),
+          username = $('#username').val(),
+          password = $('#password').val();
+        if (!title.length || !username.length || !password.length) {
+          let iid = '#inputTitle';
+          if (!username.length) iid = '#username';
+          else if (!password.length) iid = '#password';
+          $(iid).addClass('danger');
+          setTimeout(() => {
+            $(iid).removeClass('danger');
+          }, 2000);
+          showNotification('اطلاعات را کامل کنید', 'danger', undefined, undefined, 2000);
+          return;
+        }
+        const body = { username, password, title };
+        if (expireh) body.expireh = Number.parseInt(expireh);
+        if (max) body.max = Number.parseInt(max);
+        fetchRid(body);
+      });
+    </script>
+    <div id="notify_message"></div>
+    <div class="power">
+      <div class="ltr">Built with ❤︎ by <a href="https://sevenapp.co">sevenapp.co</a></div>
+      <div class="rtl">قدرت گرفته با ❤︎ توسط <a href="https://sevenapp.co">sevenapp.co</a></div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal rtl fade" id="outputModal" tabindex="-1" role="dialog" aria-labelledby="outputModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalTitle"></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="container"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

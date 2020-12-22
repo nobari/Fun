@@ -1,0 +1,122 @@
+@font-face {
+  font-family: 'ISWA';
+  src: url('https://unpkg.com/nobari@1.2.0/statics/fonts/fontA.woff');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'ISWV';
+  src: url('https://unpkg.com/nobari@1.2.0/statics/fonts/fontV.woff2');
+  font-display: swap;
+}
+.btn {
+  font-family: 'ISWV';
+}
+body {
+  direction: rtl;
+  text-align: right;
+  padding-bottom: 100px;
+  font-family: 'ISWV';
+}
+.header {
+  text-align: center;
+  margin: 8px 10px 20px;
+}
+h1,
+h2 {
+  font-family: 'ISWA';
+}
+.list-group {
+  margin-bottom: 14px;
+}
+.modal-body .container {
+  white-space: pre-wrap;
+}
+#notify_message {
+  position: fixed;
+  display: none;
+  z-index: 9999;
+  padding-top: 10px;
+  height: 50px;
+  top: 100px;
+  width: 100%;
+  text-align: center;
+  font-size: 22px;
+  font-family: 'ISWV';
+}
+.power {
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  position: fixed;
+  border-width: 0;
+  left: 0;
+  padding: 10px 50px;
+  font-family: 'ISWA';
+  font-size: 20px;
+  height: 10%;
+  border-top: 2px solid #0000001a;
+  background: radial-gradient(#ff9ac9, #000) 0 0/200% 200%;
+  animation: anim-back-loading ease-in-out 3s infinite alternate;
+}
+.power div {
+  text-transform: none;
+}
+.power .rtl {
+  direction: rtl;
+  text-align: right;
+}
+.power .ltr {
+  text-align: left;
+}
+
+@keyframes anim-back-loading {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 100% 100%;
+  }
+}
+
+#preloader {
+  opacity: 0.7;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(#000, #f9e428) 0 0/200% 200%;
+  animation: anim-back ease-in-out 3s infinite alternate;
+  z-index: 9999999;
+}
+
+.not-loaded {
+  /* background: #fff url(/assets/icon/loading.gif) no-repeat center; */
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 99999;
+  text-align: center;
+  display: flex;
+  flex-direction: column-reverse;
+  padding: 100px 20px;
+  justify-content: center;
+  /* background: var(--shakh-back); */
+  /* animation: anim-back ease-in-out 3s infinite alternate; */
+}
+.not-loaded img {
+  max-width: 100px;
+  margin: 0 auto;
+  border-radius: 50%;
+}
+.not-loaded p {
+  text-align: center;
+  direction: rtl;
+  color: #000 !important;
+  font-family: 'ISWV';
+}
+.close {
+  margin: 0 !important;
+  padding: 0 10px !important;
+}

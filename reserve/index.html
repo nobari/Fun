@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="fa">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+    <title>رزرواسیون</title>
+    <link rel="stylesheet" href="/styleMin.css" />
+
+    <meta name="description" content="سامانه رزرواسیون رقابتی" />
+    <meta name="keywords" content="سامانه,رزرواسیون,shuffle,date,sort,list,order,draw,winner" />
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://easyparvaz.ir/reserve/" />
+    <meta property="og:title" content="رزرواسیون" />
+    <meta property="og:description" content="سامانه رزرواسیون رقابتی" />
+    <meta property="og:image" content="https://unpkg.com/nobari@1.2.0/statics/imgs/sevenapp/logo.png" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://easyparvaz.ir/" />
+    <meta property="twitter:title" content="رزرواسیون" />
+    <meta property="twitter:description" content="سامانه رزرواسیون رقابتی" />
+    <meta property="twitter:image" content="https://unpkg.com/nobari@1.2.0/statics/imgs/sevenapp/logo.png" />
+
+    <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <!-- <link rel="manifest" href="%PUBLIC_URL%/manifest.json" /> -->
+
+    <link rel="shortcut icon" type="image/png" href="https://unpkg.com/nobari@1.2.0/statics/imgs/sevenapp/logo.png" />
+    <link rel="apple-touch-icon" href="https://unpkg.com/nobari@1.2.0/statics/imgs/sevenapp/logo.png" />
+    <!-- add to homescreen for ios -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Reservation" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="viewport" content="width=device-width,height=device-height,user-scalable=no,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0" />
+    <style>
+      #live {
+        width: 10px;
+        height: 10px;
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 9;
+        background-color: #34d85b;
+        border-radius: 50%;
+        display: none;
+      }
+      #dead {
+        position: fixed;
+        right: 20px;
+        top: 35px;
+        z-index: 9;
+        border: 2px dashed;
+        transform: rotate(-45deg);
+        width: 90px;
+        font-size: 20px;
+        text-align: center;
+        font-family: 'ISWA';
+        color: red;
+        display: none;
+      }
+      #inputForm {
+        position: sticky;
+        top: 0;
+        background: white;
+        text-align: center;
+      }
+      #inputForm input {
+        font-size: 24px;
+        text-align: center;
+        font-family: 'ISWV';
+      }
+      #dateDelim {
+        width: 30px;
+        text-align: center;
+      }
+      .reserve-list {
+        margin: 10px 4px;
+        text-align: center;
+        display: table;
+      }
+      .reserve-list .btn {
+        display: inline-table;
+        width: 80px;
+        height: 80px;
+        margin: 10px;
+        border-radius: 50%;
+        border: 4px solid black;
+        font-size: 75px;
+        padding: 0px;
+        font-family: 'ISWA';
+        line-height: 0;
+      }
+      .btn[data-reserved] {
+        border: 0;
+        color: black;
+        background: transparent;
+      }
+      .footer {
+        text-align: center;
+      }
+      .footer img {
+        max-width: 400px;
+        width: 80%;
+        cursor: pointer;
+      }
+      .danger {
+        border: 2px solid red;
+      }
+      #newBtn {
+        display: none;
+        margin: 20px 0;
+        border-radius: 20px;
+      }
+    </style>
+  </head>
+  <body lang="fa">
+    <div id="live" data-toggle="tooltip" title=" ✅ زنده ✅ " data-animation=""></div>
+    <div id="dead" data-toggle="tooltip" title="❌ این دوره کاملا تمام شده" data-animation="">تمام شده</div>
+    <div id="preloader">
+      <div class="not-loaded" id="loader">
+        <p>در حال بارگذاری ...</p>
+        <img src="https://unpkg.com/nobari@1.2.0/statics/imgs/sevenapp/loading.gif" />
+      </div>
+    </div>
+    <div class="container rtl">
+      <div class="header wow fadeInDown" data-wow-delay="0.3s">
+        <h1>رزرواسیون</h1>
+      </div>
+      <div class="row wow bounceIn" data-wow-delay="0.3s">
+        <div class="col wow bounceIn" data-wow-delay="0.3s">
+          <a id="newBtn" href="new" type="button" class="btn btn-primary btn-lg btn-block">ایجاد دوره</a>
+          <form id="inputForm">
+            <h2>اسم</h2>
+            <div class="form-group">
+              <input class="form-control" id="inputList" placeholder="مژده" />
+            </div>
+          </form>
+          <div class="reserve-list" data-wow-delay="0.3s"></div>
+          <button onclick="document.location.reload()" type="button" class="btn btn-link btn-sm btn-block">بروز رسانی 🔄</button>
+          <div class="footer">
+            <img onclick="document.scrollingElement.scrollTo({top:0,behavior:'smooth'})" src="https://cdn.jsdelivr.net/gh/nobari/Boomi/statics/imgs/boomiapp/footer.svg" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-html5sortable@1.0.0/jquery.sortable.min.js"></script>
+    <script src="https://unpkg.com/nobari@1.2.9/js/basics.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css/animate.compat.css" />
+    <script src="https://cdn.jsdelivr.net/npm/wowjs/dist/wow.min.js"></script>
+    <script src="/tools.js"></script>
+    <script>
+      const production = !document.location.origin.includes('localhost') && !document.location.origin.includes('0.0.0');
+      addScript(captchaURL);
+      const apiBase = `https://${production ? 'api.boomiapp.ir' : 'localhost:777'}/reserve/`;
+      let currentRes = {};
+      let title = '';
+      $('#btnClear').click((e) => {
+        e.preventDefault();
+        init('');
+      });
+      $('#inputForm').submit((e) => {
+        e.preventDefault();
+        showNotification('یکی از اعداد سبز را انتخاب کنید', 'success');
+      });
+      async function init() {
+        let reservables = '';
+        for (let i = 1; i <= 30; i++) reservables += `<button type="button" data-rid="${i}" class="btn btn-success btn-lg btn-block wow zoomInDown" data-wow-delay="${i / 20}s">${boomiBasics.toPersian(i)}</button>`;
+        $('.reserve-list').html(reservables);
+        $('.reserve-list .btn').click((e) => {
+          e.preventDefault();
+          const reserved = !!e.target.dataset.reserved,
+            key = e.target.dataset.rid;
+          console.log('clicked:', reserved, key);
+          if (reserved) {
+            showNotification(`${boomiBasics.toPersian(key)} قبلا برای «${currentRes.r[key].from}» رزرو شده`, 'danger');
+            return;
+          }
+          if (currentRes && currentRes.dead) {
+            showNotification(`این دوره تمام شده.`, 'danger');
+            return;
+          }
+          let from = $('#inputList').val().trim();
+          if (!from.length) {
+            showNotification(`لطفا اسم خود را وارد نمایید.`, 'danger');
+            $('#inputList').addClass('danger');
+            setTimeout(() => {
+              $('#inputList').removeClass('danger');
+            }, 2000);
+            return;
+          }
+
+          fetchRid(apiBase + currentRes.id, { from, key }, 'POST');
+        });
+        longPoll();
+        $('#preloader').fadeOut();
+      }
+      let polling = true;
+      const longPoll = async () => {
+        if (currentRes.dead) {
+          $('#live').fadeOut();
+          $('#dead').fadeIn();
+          $('#newBtn').fadeIn();
+          $('.reserve-list').fadeOut();
+          $('#inputForm').fadeOut();
+          showNotification('❌ این دوره کاملا تمام شده', 'danger', undefined, undefined, 4000);
+          await timeout(60000);
+        } else {
+          $('#dead').fadeOut();
+          $('#live').fadeIn();
+          if (polling && document.visibilityState == 'visible') {
+            try {
+              const res = await fetchRid();
+              console.log('fetch:', res);
+            } catch (e) {
+              console.log('longpoll error:', e);
+            }
+          } else console.log('no poll');
+          await timeout(1500);
+          $('#live').fadeOut();
+        }
+        return longPoll();
+      };
+      const fetchRid = async (url = apiBase, body, method = 'GET') => {
+        console.log('fetch:', url, body, method);
+        if (body) {
+          $('#preloader').fadeIn();
+          polling = false;
+        }
+        return $.ajax({
+          method,
+          crossDomain: true,
+          url,
+          data: body ? JSON.stringify({ ...body, ctoken: await getCaptcha() }) : undefined,
+          contentType: 'application/json; charset=utf-8',
+        })
+          .done(function (res) {
+            try {
+              console.log('fetch result:', res);
+              if (!body) {
+                currentRes = res;
+                if (!res.r || !Object.keys(res.r).length) $(`.reserve-list [data-reserved]`).each((i, e) => delete e.dataset.reserved);
+                else
+                  for (const red in res.r) {
+                    $(`.reserve-list [data-rid=${red}]`)[0].dataset.reserved = true;
+                  }
+                title = res.id ? `${res.id}${` دوره ${boomiBasics.toPersian((res.rep || 0) + 1)} `} ${window.moment ? '@ ' + boomiBasics.toPersian(moment(res.AT).format('dddd DD MMM')) : ''}` : 'یک دروه ایجاد کنید';
+                document.title = title;
+                $(`.header h1`).html(title);
+                if (!res.id) {
+                  $('.reserve-list').fadeOut();
+                  $('#inputForm').fadeOut();
+                  $('#newBtn').fadeIn();
+                } else {
+                  $('.reserve-list').fadeIn();
+                  $('#inputForm').fadeIn();
+                  $('#newBtn').fadeOut();
+                }
+                return;
+              } else {
+                $('#preloader').fadeOut();
+                polling = true;
+              }
+              // showNotification(`${msg.name} با موفقیت ثبت شد`, 'success', undefined, undefined, 7000);
+              $('#modalTitle').html(title);
+              // if (!res.err) $('#inputList').val('');
+              $('#outputModal .modal-body .container').html(res.err ?? ` ✅ شماره « ${boomiBasics.toPersian(body.key)} » با موفقیت برای شما «${body.from}» ثبت شد`);
+              $('#outputModal').modal();
+            } catch (e) {
+              console.log('fetch errr:', e);
+            }
+          })
+          .fail(function (msg) {
+            console.log('fetch error:', msg);
+            showNotification(msg.responseText ?? 'خطا رخ داد مجددا تلاش کنید.', 'danger', undefined, undefined, 4000);
+            $('#preloader').fadeOut();
+          });
+      };
+      init();
+      function initMoment() {
+        moment.locale('fa');
+        console.log('moment inited:', moment().format('dddd DD MMM'));
+      }
+    </script>
+    <div id="notify_message"></div>
+    <div class="power">
+      <div class="ltr">Built with ❤︎ by <a href="https://sevenapp.co">sevenapp.co</a></div>
+      <div class="rtl">قدرت گرفته با ❤︎ توسط <a href="https://sevenapp.co">sevenapp.co</a></div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal rtl fade" id="outputModal" tabindex="-1" role="dialog" aria-labelledby="outputModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalTitle"></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="container"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script onload="initMoment()" defer src="https://unpkg.com/jalali-moment/dist/jalali-moment.browser.js"></script>
+  </body>
+</html>

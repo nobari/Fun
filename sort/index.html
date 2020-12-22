@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fa">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+    <title>مرتب سازی</title>
+    <link rel="stylesheet" href="/styleMin.css" />
+
+    <meta name="description" content="مرتب سازی با تاریخ" />
+    <meta name="keywords" content="مرتب سازی,تاریخ,shuffle,date,sort,list,order,draw,winner" />
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://easyparvaz.ir/sort.html" />
+    <meta property="og:title" content="مرتب سازی" />
+    <meta property="og:description" content="مرتب سازی با تاریخ" />
+    <meta property="og:image" content="https://unpkg.com/nobari@1.2.0/statics/imgs/sevenapp/logo.png" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://easyparvaz.ir/" />
+    <meta property="twitter:title" content="مرتب سازی" />
+    <meta property="twitter:description" content="مرتب سازی با تاریخ" />
+    <meta property="twitter:image" content="https://unpkg.com/nobari@1.2.0/statics/imgs/sevenapp/logo.png" />
+
+    <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <!-- <link rel="manifest" href="%PUBLIC_URL%/manifest.json" /> -->
+
+    <link rel="shortcut icon" type="image/png" href="https://unpkg.com/nobari@1.2.0/statics/imgs/sevenapp/logo.png" />
+    <link rel="apple-touch-icon" href="https://unpkg.com/nobari@1.2.0/statics/imgs/sevenapp/logo.png" />
+    <!-- add to homescreen for ios -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Shuffle" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="viewport" content="width=device-width,height=device-height,user-scalable=no,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0" />
+    <style>
+      #dateDelim {
+        width: 30px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body lang="fa">
+    <div class="container rtl">
+      <div class="header wow fadeInDown" data-wow-delay="0.3s">
+        <h1>مرتب/بهم ریختن لیست</h1>
+      </div>
+      <div class="row">
+        <div class="col-md wow bounceIn" data-wow-delay="0.3s">
+          <div class="card">
+            <div class="card-body">
+              <form id="inputForm">
+                <h2>ورودی</h2>
+                <div class="form-group">
+                  <textarea class="form-control" id="inputList" rows="10"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg btn-block">بهم بریز</button>
+                <button id="btnClear" type="button" class="btn btn-danger btn-block">پاک کن</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div id="outCol" class="col-md wow bounceIn" style="display: none" data-wow-delay="0.3s">
+          <div class="card">
+            <div class="card-body">
+              <h2>خروجی</h2>
+              <div id="outputList"></div>
+              <div class="form-group row">
+                <div class="col-4">
+                  <input type="checkbox" id="dateCheck" checked />
+                  <label for="dateCheck">با تاریخ</label>
+                  <input type="text" id="dateDelim" />
+                </div>
+                <div class="col-8">
+                  <label for="inputDate">تاریخ شروع</label>
+                  <input id="inputDate" type="date" />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <button id="copyBtn" type="button" class="btn btn-primary btn-lg btn-block">کپی کن</button>
+                </div>
+                <div class="col">
+                  <button id="showBtn" type="button" class="btn btn-secondary btn-lg btn-block">نمایش</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-html5sortable@1.0.0/jquery.sortable.min.js"></script>
+    <script src="https://unpkg.com/nobari@1.2.9/js/basics.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css/animate.compat.css" />
+    <script src="https://cdn.jsdelivr.net/npm/wowjs/dist/wow.min.js"></script>
+    <script src="/tools.js"></script>
+    <script>
+      $('#btnClear').click((e) => {
+        e.preventDefault();
+        init('');
+      });
+      function init(str = 'نفر اول\nنفر دوم\nنفر سوم\nنفر چهارم') {
+        $('#dateDelim').val('🔸');
+        $('#inputList').val(str);
+        $('#outputList').html('');
+        $('#outCol').hide(1000);
+        document.getElementById('inputDate').valueAsDate = new Date();
+      }
+      init();
+      $('#inputForm').submit((e) => {
+        e.preventDefault();
+        let str = $('#inputList').val().trim();
+        let splits = str.split('\n');
+        console.log('form submited:', str, splits, e);
+        let outList = '<ul class="list-group">';
+        shuffle2(splits).forEach((element) => {
+          let s = element.trim();
+          if (s.length < 1) return;
+          outList += `<li class="list-group-item">${element.includes('-') ? element.split('-')[1] : element}</li>`;
+        });
+        outList += `</ul>`;
+        $('#outputList').html(outList);
+        $('.list-group').sortable();
+        $('#outCol').show(1000);
+      });
+      function getOutput() {
+        let outStr = '';
+        let i = 0;
+        let withDate = $('#dateCheck')[0].checked;
+        if (withDate) {
+          let startDate = moment(new Date($('#inputDate').val()));
+          $('#outputList li').each((ind, el) => {
+            outStr += `${++i}-${el.innerHTML} ${$('#dateDelim').val()} ${startDate.format('dddd DD MMM')} ${$('#dateDelim').val()}\n`;
+            startDate.add('d', 1);
+          });
+        } else
+          $('#outputList li').each((ind, el) => {
+            outStr += `${++i}-${el.innerHTML}\n`;
+          });
+        return boomiBasics.toPersian(outStr);
+      }
+      $('#copyBtn').click((e) => {
+        e.preventDefault();
+        copyTextToClipboard(getOutput());
+      });
+      $('#showBtn').click((e) => {
+        e.preventDefault();
+        $('#outputModal .modal-body .container').html(getOutput());
+        $('#outputModal').modal();
+      });
+      function initMoment() {
+        moment.locale('fa');
+        console.log('moment inited:', moment().format('dddd DD MMM'));
+      }
+    </script>
+    <div id="notify_message"></div>
+    <div class="power">
+      <div class="ltr">Built with ❤︎ by <a href="https://sevenapp.co">sevenapp.co</a></div>
+      <div class="rtl">قدرت گرفته با ❤︎ توسط <a href="https://sevenapp.co">sevenapp.co</a></div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal rtl fade" id="outputModal" tabindex="-1" role="dialog" aria-labelledby="outputModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="noafarinModalLabel">نمایش خروجی</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="container"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script onload="initMoment()" defer src="https://unpkg.com/jalali-moment/dist/jalali-moment.browser.js"></script>
+  </body>
+</html>
